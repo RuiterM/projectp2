@@ -1,4 +1,9 @@
-<?php ?>
+<?php
+$db = new PDO('mysql:host=localhost;dbname=auto4u',
+    "root" . "");
+$query = $db->prepare("select * FROM cards");
+$query->execute();
+$autos = $query->fetchAll(PDO::FETCH_ASSOC);?>
 
 <!DOCTYPE html>
 <html>
@@ -13,9 +18,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Auto4U</title>
 </head>
-<body>
+<body class="bg-dark">
 <!--header-->
-<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+<nav class="navbar navbar-expand-lg navbar-light bg-secondary" style="background: rgb(0,0,0);
+background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(255,255,255,1) 100%);">
     <div class="container-fluid">
         <a href="index.php">
         <img class="wheel" src="img/wheel.png">
@@ -29,19 +35,54 @@
                     <a class="nav-link text-light" href="Catogorien.php">Catogoriën</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light" href="sushifotos.php">Sushis</a>
+                    <a class="nav-link text-light" href="huren.php">Huren</a>
                 </li>
                 <li class="nav-item me-auto">
-                    <a class="nav-link text-light" href="sushifotos.php">Login</a>
+                    <a class="nav-link text-dark" style="margin-left: 1450px" href="login.php">Login</a>
                 </li>
                 <li class="nav-item me-auto">
-                    <a class="nav-link text-light" href="sushifotos.php">Registeer</a>
+                    <a class="nav-link text-dark" href="register.php">Registeer</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
-<div><img src="img/header.jpg" class="w-100" style="height: 200px; object-fit: cover;"></div>
+<div><img src="img/header.jpg" class="w-100" style="height: 150px; object-fit: cover;"></div>
 <!--header-->
+<div class="d-flex justify-content-center">
+    <div>
+        <h1 class="pt-2">Goedemiddag, welkom bij Auto4u</h1>
+        <i class="d-flex justify-content-center fw-bold fst-normal text-secondary">Goeden<?php $datum = date("H");
+
+            if ($datum > 6 && $datum < 12) {
+                echo "ochtend";
+            }
+            elseif ($datum > 12 && $datum < 18) {
+                echo "middag";
+            }
+            elseif ($datum > 18 && $datum < 24) {
+                echo "avond";
+            }
+            elseif ($datum > 24 || $datum < 6) {
+                echo "nacht";
+            } ?> de datum van vandaag is: <?php
+            $datum = date('d-m-Y H:i');
+            echo $datum
+            ?></i></p>
+    </div>
+</div>
+<div class="container pb-3">
+    <div class="row d-flex justify-content-center">
+        <div class="container pb-3">
+            <div class="row d-flex justify-content-center">
+                <?php foreach ($autos as $auto) {
+                    echo "<div class='card w-25 px-2 bg-secondary' style='margin: 5px'>";
+                    echo  $auto["name"] .'<img src="'.$auto['img'].'">' . "<br><br>" . "
+                    " . $auto["beschrijving"];
+                    echo '</div>';
+                    echo "<br>";}?>
+            </div>
+    </div>
+</div>
 </body>
 </html>
